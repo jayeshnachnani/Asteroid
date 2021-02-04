@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="asteroid"
+            type="com.udacity.asteroidradar.Asteroid" />
+
+        <variable
+            name="clickListener"
+            type="com.udacity.asteroidradar.main.AsteroidListener" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:onClick="@{() -> clickListener.onClick(asteroid)}"
+    >
 
     <!--ImageView
         android:id="@+id/quality_image"
@@ -20,65 +34,72 @@
 
         <!--tools:srcCompat="@drawable/ic_sleep_5"-->
 
+
     <TextView
         android:id="@+id/code_name"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="20dp"
         android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/close_approach_date"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="20dp"
         android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/code_name" />
+        app:layout_constraintTop_toBottomOf="@+id/code_name"
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/absolute_magnitude"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="20dp"
         android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/close_approach_date" />
+        app:layout_constraintTop_toBottomOf="@+id/close_approach_date"
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/estimated_diameter"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:background="@color/text_grey"
+        android:layout_height="20dp"
+        android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/absolute_magnitude" />
+        app:layout_constraintTop_toBottomOf="@+id/absolute_magnitude"
+        app:layout_constraintVertical_bias="0.25" />
 
     <TextView
         android:id="@+id/relative_velocity"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:background="@color/text_grey"
+        android:layout_height="20dp"
+        android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/estimated_diameter" />
+        app:layout_constraintTop_toBottomOf="@+id/estimated_diameter"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/distance_from_earth"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:background="@color/text_grey"
+        android:layout_height="20dp"
+        android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relative_velocity" />
+        app:layout_constraintTop_toBottomOf="@+id/relative_velocity"
+        app:layout_constraintVertical_bias="0.9" />
 
     <!--TextView
         android:id="@+id/potentially_hazardous"
@@ -93,3 +114,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

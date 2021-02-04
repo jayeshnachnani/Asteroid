@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
 /*import com.example.android.trackmysleepquality.R
@@ -14,9 +15,13 @@ import com.example.android.trackmysleepquality.convertDurationToFormatted
 import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight*/
 import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.databinding.ListItemAsteroidBinding
+//class AsteroidAdapter: RecyclerView.Adapter<AsteroidAdapter.ViewHolder>()
+//class SleepNightAdapter(val clickListener: SleepNightListener)
+//class AsteroidAdapter (val clickListener: AsteroidListener): RecyclerView.Adapter<AsteroidAdapter.ViewHolder>()
 
+class AsteroidAdapter (val clickListener: AsteroidListener): RecyclerView.Adapter<AsteroidAdapter.ViewHolder>()
 
-class AsteroidAdapter: RecyclerView.Adapter<AsteroidAdapter.ViewHolder>()
 {
     //var data = listOf<Asteroid>()
     val asteroid1 = Asteroid(1L,"rumpelstiltskin","sec",1.6,1.7,
@@ -51,7 +56,9 @@ class AsteroidAdapter: RecyclerView.Adapter<AsteroidAdapter.ViewHolder>()
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater
             .inflate(R.layout.list_item_asteroid, parent, false)
-        return ViewHolder(view)
+        //should be ViewHolder(view) but that is giving an error for now
+        //return ViewHolder(view)
+        return ViewHolder.from(parent)
     }
 
     override fun getItemCount()= asteroidList.size
@@ -65,12 +72,30 @@ class AsteroidAdapter: RecyclerView.Adapter<AsteroidAdapter.ViewHolder>()
         holder.estimateddiameter.text = item.estimatedDiameter.toString()
         holder.relativevelocity.text = item.relativeVelocity.toString()
         holder.distancefromearth.text = item.distanceFromEarth.toString()
+        //holder.bind(clickListener,
+        holder.bind(clickListener,item)
+
         /*holder.ispotentiallyhazardous.text = item.isPotentiallyHazardous.toString()*/
 
 
     }
+    //class ViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder private constructor(val binding: ListItemAsteroidBinding)
+            : RecyclerView.ViewHolder(binding.root) {
 
-    class ViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(clickListener: AsteroidListener, item: Asteroid) {
+            binding.asteroid = item
+            binding.clickListener = clickListener
+            binding.executePendingBindings()
+        }
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ListItemAsteroidBinding.inflate(layoutInflater, parent, false)
+
+                return ViewHolder(binding)
+            }
+        }
         val codename: TextView = itemView.findViewById(R.id.code_name)
         val closeappraochdate: TextView = itemView.findViewById(R.id.close_approach_date)
         val absolutemagnitude: TextView = itemView.findViewById(R.id.absolute_magnitude)
@@ -82,4 +107,7 @@ class AsteroidAdapter: RecyclerView.Adapter<AsteroidAdapter.ViewHolder>()
 
 
 }
+}
+class AsteroidListener(val clickListener: (asteroidId: Long) -> Unit) {
+    fun onClick(asteroid: Asteroid) = clickListener(asteroid.id)
 }

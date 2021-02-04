@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.main
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.annotation.RestrictTo
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Asteroid
@@ -56,7 +58,13 @@ class MainFragment : Fragment() {
         //binding.viewModel = viewModel
         setHasOptionsMenu(true)
 
-        val adapter = AsteroidAdapter()
+        /*val adapter = SleepNightAdapter(AsteroidListener { asteroidId ->
+            Toast.makeText(context, "${asteroidId}", Toast.LENGTH_LONG).show()
+        })*/
+        val adapter = AsteroidAdapter(AsteroidListener { asteroidId ->
+            //Toast.makeText(context, "${asteroidId}", Toast.LENGTH_LONG).show()
+            AsteroidViewModel.onAsteroidClicked(asteroidId)
+        })
         binding.asteroidRecycler.adapter = adapter
 
         /*viewModel.nights.observe(viewLifecycleOwner, Observer {
@@ -71,6 +79,14 @@ class MainFragment : Fragment() {
                 adapter.asteroidList = it as MutableList<Asteroid>
             }
         })
+
+        AsteroidViewModel.navigateToAsteroidDetails.observe(viewLifecycleOwner, Observer { asteroid ->
+            asteroid?.let { this.findNavController().navigate(
+                    MainFragmentDirections.actionShowDetail(asteroid1))
+                AsteroidViewModel.onAsteroidNavigated()
+            }
+        })
+        //asteroid1 is hardcoded above
 
         Timber.plant(Timber.DebugTree())
         return binding.root

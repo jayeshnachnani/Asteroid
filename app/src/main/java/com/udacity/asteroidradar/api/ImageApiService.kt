@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.api
 
+
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Asteroid
@@ -16,16 +17,16 @@ import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import retrofit2.Response
 import retrofit2.http.Query
 
-private const val BASE_URL = "https://api.nasa.gov/neo/rest/v1/"
+private const val BASE_URL = "https://api.nasa.gov/planetary/"
 
 private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
+    .add(KotlinJsonAdapterFactory())
+    .build()
 
 private val retrofit = Retrofit.Builder()
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .baseUrl(BASE_URL)
-        .build()
+    .addConverterFactory(ScalarsConverterFactory.create())
+    .baseUrl(BASE_URL)
+    .build()
 
 //val String startDate= "2020-01-01"
 private const val endDate= "2020-01-02"
@@ -33,9 +34,9 @@ private const val endDate= "2020-01-02"
 
 // TODO (03) Implement the AsteroidApiService interface with @GET getProperties returning a String
 
-interface AsteroidApiService {
+interface ImageApiService {
     //retrofit will generate the functions required, we just need to tell it what to do
-    @GET("feed?start_date=2021-02-04&api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
+    @GET("apod?api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
     //fun getProperties(@Query("start_date") String startDate):
     fun getProperties():
             Call <String>
@@ -44,9 +45,9 @@ interface AsteroidApiService {
 
 // TODO (04) Create the MarsApi object using Retrofit to implement the MarsApiService
 
-object AsteroidApi {
-    val retrofitService : AsteroidApiService by lazy {
-        retrofit.create(AsteroidApiService::class.java)
+object ImageApi {
+    val retrofitService : ImageApiService by lazy {
+        retrofit.create(ImageApiService::class.java)
     }
 }
 
