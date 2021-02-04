@@ -27,7 +27,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
+                android:contentDescription="TODO"
                 android:scaleType="centerCrop"
+                app:srcCompat="@drawable/asteroid_safe">
+                <!--android:src="@{viewModel.imgURL}"-->
+            </ImageView>
+
+
                 app:srcCompat="@drawable/placeholder_picture_of_day" />
 
             <TextView
@@ -47,7 +53,7 @@
             android:id="@+id/asteroid_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
+            android:background="#34E80C"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

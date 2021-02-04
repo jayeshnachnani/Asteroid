@@ -57,12 +57,19 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     val navigateToAsteroidDetails
         get() = _navigateToAsteroidDetails
 
+    private val _imgURL = MutableLiveData<String>()
+
+    val imgURL: LiveData<String>
+        get() = _imgURL
+
 
     val str = Timber.i("try")
 
     init {
         getAsteroidProperties()
         getImage()
+        _imgURL.value = "https://apod.nasa.gov/apod/image/2102/a14pan9335-43emj_900.jpg"
+
         _list.add(asteroid1)
         _list.add(asteroid2)
         _list.add(asteroid3)
