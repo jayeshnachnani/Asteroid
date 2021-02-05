@@ -29,10 +29,10 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="TODO"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{viewModel.imgURL}"
-                >
+                app:imageUrl="@{viewModel.obj3.url}"
+                />
                 <!--android:src="@{viewModel.imgURL}"-->
-            </ImageView>
+
 
 
                 app:srcCompat="@drawable/placeholder_picture_of_day" />

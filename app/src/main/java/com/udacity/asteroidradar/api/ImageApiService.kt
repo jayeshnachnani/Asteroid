@@ -4,6 +4,7 @@ package com.udacity.asteroidradar.api
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.database.RawJson
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -23,8 +24,9 @@ private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
+
 private val retrofit = Retrofit.Builder()
-    .addConverterFactory(ScalarsConverterFactory.create())
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL)
     .build()
 
@@ -39,7 +41,7 @@ interface ImageApiService {
     @GET("apod?api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
     //fun getProperties(@Query("start_date") String startDate):
     fun getProperties():
-            Call <String>
+            Call <PictureOfDay>
 }
 
 

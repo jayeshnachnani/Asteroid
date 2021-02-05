@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.ImageApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
@@ -49,7 +50,7 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     private val _asteroidTempList = MutableLiveData<List<Asteroid>>()
     val asteroidTempList: LiveData<List<Asteroid>>
         get() = _asteroidTempList
-
+    var obj3 = PictureOfDay("","","")
     /*private val _navigateToAsteroidDetails = MutableLiveData<Asteroid>()
     val navigateToSleepQuality: LiveData<Asteroid>
         get() = _navigateToAsteroidDetails*/
@@ -128,16 +129,18 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     }
 
     private fun getImage() {
-        ImageApi.retrofitService.getProperties().enqueue( object: Callback<String> {
-            override fun onFailure(call: Call<String>, t: Throwable) {
+        ImageApi.retrofitService.getProperties().enqueue( object: Callback<PictureOfDay> {
+            override fun onFailure(call: Call<PictureOfDay>, t: Throwable) {
                 _response.value = "Failure: " + t.message
                 Timber.i("Failure:" + _response.value)
             }
 
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+            override fun onResponse(call: Call<PictureOfDay>, response: Response<PictureOfDay>) {
                 _response.value = "Success: ${response.body()} Asteroid properties retrieved"
-                var obj2 = JSONObject(response.body().toString())
-                Timber.i("obj2:" + obj2.toString())
+                var obj2 =response.body()
+                obj3 = response.body()!!
+
+                Timber.i("obj3:" + obj3?.url.toString())
                 Timber.i("Image2:" + imgURL.toString())
 
 
