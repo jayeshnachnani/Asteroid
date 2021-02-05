@@ -38,8 +38,11 @@
     <TextView
         android:id="@+id/code_name"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:background="@android:color/white"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,15 +52,17 @@
     <TextView
         android:id="@+id/close_approach_date"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:background="@android:color/white"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/code_name"
         app:layout_constraintVertical_bias="0.2" />
 
-    <TextView
+    <!--TextView
         android:id="@+id/absolute_magnitude"
         android:layout_width="match_parent"
         android:layout_height="20dp"
@@ -101,7 +106,7 @@
         app:layout_constraintTop_toBottomOf="@+id/relative_velocity"
         app:layout_constraintVertical_bias="0.9" />
 
-    <!--TextView
+    <!TextView
         android:id="@+id/potentially_hazardous"
         android:layout_width="match_parent"
         android:layout_height="38dp"

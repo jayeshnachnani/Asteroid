@@ -68,10 +68,10 @@ class AsteroidAdapter (val clickListener: AsteroidListener): RecyclerView.Adapte
         val res = holder.itemView.context.resources
         holder.codename.text = item.codename
         holder.closeappraochdate.text = item.closeApproachDate
-        holder.absolutemagnitude.text = item.absoluteMagnitude.toString()
+        /*holder.absolutemagnitude.text = item.absoluteMagnitude.toString()
         holder.estimateddiameter.text = item.estimatedDiameter.toString()
         holder.relativevelocity.text = item.relativeVelocity.toString()
-        holder.distancefromearth.text = item.distanceFromEarth.toString()
+        holder.distancefromearth.text = item.distanceFromEarth.toString()*/
         //holder.bind(clickListener,
         holder.bind(clickListener,item)
 
@@ -98,11 +98,11 @@ class AsteroidAdapter (val clickListener: AsteroidListener): RecyclerView.Adapte
         }
         val codename: TextView = itemView.findViewById(R.id.code_name)
         val closeappraochdate: TextView = itemView.findViewById(R.id.close_approach_date)
-        val absolutemagnitude: TextView = itemView.findViewById(R.id.absolute_magnitude)
+        /*val absolutemagnitude: TextView = itemView.findViewById(R.id.absolute_magnitude)
         val estimateddiameter: TextView = itemView.findViewById(R.id.estimated_diameter)
         val relativevelocity: TextView = itemView.findViewById(R.id.relative_velocity)
         val distancefromearth: TextView = itemView.findViewById(R.id.distance_from_earth)
-        /*val ispotentiallyhazardous: TextView = itemView.findViewById(R.id.potentially_hazardous)*/
+        val ispotentiallyhazardous: TextView = itemView.findViewById(R.id.potentially_hazardous)*/
 
 
 
