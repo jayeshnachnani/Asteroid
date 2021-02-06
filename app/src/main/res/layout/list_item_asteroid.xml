@@ -62,6 +62,18 @@
         app:layout_constraintTop_toBottomOf="@+id/code_name"
         app:layout_constraintVertical_bias="0.4" />
 
+    <ImageView
+        android:id="@+id/hazardous_or_not"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+
+        app:asteroidStatusImage="@{asteroid.potentiallyHazardous}"
+        app:layout_constraintEnd_toEndOf="@+id/code_name"
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintTop_toTopOf="@+id/code_name"
+        app:layout_constraintVertical_bias="0.1"/>
+        <!--tools:srcCompat="@drawable/asteroid_safe" /!-->
+
     <!--TextView
         android:id="@+id/absolute_magnitude"
         android:layout_width="match_parent"
