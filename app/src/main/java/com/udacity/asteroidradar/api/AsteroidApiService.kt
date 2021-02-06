@@ -35,7 +35,7 @@ private const val endDate= "2020-01-02"
 
 interface AsteroidApiService {
     //retrofit will generate the functions required, we just need to tell it what to do
-    @GET("feed?start_date=2021-02-05&api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
+    @GET("feed?start_date=2021-02-06&api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
     //fun getProperties(@Query("start_date") String startDate):
     fun getProperties():
             Call <String>

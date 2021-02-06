@@ -12,8 +12,10 @@ import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.AsteroidDatabaseDao
 import com.udacity.asteroidradar.database.RawJson
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -39,7 +41,7 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     }
 
     //private val asteroids = database.getAllAsteroids()
-    val asteroids = database.getAllAsteroids()
+    //val asteroids = database.getAllAsteroids()
     val asteroid1 = Asteroid(1L,"temp1","sec",1.6,1.7,
         1.8,1.9,true)
     val asteroid2 = Asteroid(1L,"temp2","sec",1.6,1.7,
@@ -67,10 +69,11 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     val dataSource = AsteroidDatabase.getInstance(application).asteroidDatabaseDao
 
     init {
+
         getAsteroidProperties()
         getImage()
         addtoList()
-        _imgURL = "apod.nasa.gov/apod/image/2102/a14pan9335-43emj_900.jpg"
+        //_imgURL = "apod.nasa.gov/apod/image/2102/a14pan9335-43emj_900.jpg"
         Timber.i("Image1:" + imgURL.toString())
         Timber.i("Image2:" + _imgURL.toString())
 
@@ -82,11 +85,11 @@ class MainViewModel(val database: AsteroidDatabaseDao,
         //getAsteroids()
     }
 
-    private fun getAsteroids() {
+    /*private fun getAsteroids() {
         viewModelScope.launch {
             val asteroids = database.getAllAsteroids()
         }
-    }
+    }*/
 
     fun onAsteroidClicked(id: Long) {
         _navigateToAsteroidDetails.value = id
@@ -114,6 +117,12 @@ class MainViewModel(val database: AsteroidDatabaseDao,
                 asteroidList.forEach {
                     //dataSource.insert(it)
                 _list.add(it)}
+                viewModelScope.launch {
+                    withContext(Dispatchers.IO) {
+                        insertAsteroidsToDatabase()
+                    }
+                    //insertAsteroidsToDatabase()
+                }
                 val asteroid1 = Asteroid(1L,"second","sec",1.6,1.7,
                     1.8,1.9,true)
                 //asteroidList.add(asteroid1)
@@ -162,8 +171,16 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     }
 
     private fun addtoList(){
-        val asteroidTemp1List: LiveData<List<Asteroid>> = dataSource.getAllAsteroids()
+        val asteroidTemp1List = dataSource.getAllAsteroids()
+        _list.clear()
+        asteroidTemp1List.value?.forEach { _list.add (it)}
+
         //TO DO: _list.addAll(asteroidTemp1List)
 
+    }
+
+    private suspend fun insertAsteroidsToDatabase() {
+        //dataSource.insert(asteroid1)
+        _list.forEach{dataSource.insert(it)}
     }
 }
