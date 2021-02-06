@@ -12,7 +12,7 @@ interface AsteroidDatabaseDao {
     @Update
     fun update(asteroid: Asteroid)
 
-    @Query("SELECT * FROM asteroid_details ORDER BY id DESC")
+    @Query("SELECT * FROM asteroid_details ORDER BY id DESC LIMIT 2")
     fun getAllAsteroids(): LiveData<List<Asteroid>>
 
     /*@Query("SELECT * from asteroid_details WHERE id = :key")

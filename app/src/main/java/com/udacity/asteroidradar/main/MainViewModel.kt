@@ -39,9 +39,9 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     //private val asteroids = database.getAllAsteroids()
     //val asteroids = database.getAllAsteroids()
     val asteroid1 = Asteroid(1L,"temp1","sec",1.6,1.7,
-        1.8,1.9,true)
+        1.8,1.9,false)
     val asteroid2 = Asteroid(1L,"temp2","sec",1.6,1.7,
-        1.8,1.9,true)
+        1.8,1.9,false)
     val asteroid3 = Asteroid(1L,"rumpelstiltskinrumpelstiltskin","sec",1.6,1.7,
         1.8,1.9,true)
     private val _list = mutableListOf<Asteroid>()
@@ -77,7 +77,7 @@ class MainViewModel(val database: AsteroidDatabaseDao,
         _list.add(asteroid2)
         _list.add(asteroid3)
 
-        _asteroidTempList.value = _list
+        //_asteroidTempList.value = _list
         //getAsteroids()
     }
 
@@ -112,7 +112,8 @@ class MainViewModel(val database: AsteroidDatabaseDao,
                 asteroidList.forEach {  "Timbuk:" + Timber.i("TimbukTimbuk" + it.codename) }
                 asteroidList.forEach {
                     //dataSource.insert(it)
-                _list.add(it)}
+                _list.add(it)
+                }
                 viewModelScope.launch {
                     withContext(Dispatchers.IO) {
                         insertAsteroidsToDatabase()
@@ -171,6 +172,8 @@ class MainViewModel(val database: AsteroidDatabaseDao,
         _list.clear()
         asteroidTemp1List.value?.forEach { _list.add (it)}
 
+        _asteroidTempList.value = _list
+
         //TO DO: _list.addAll(asteroidTemp1List)
 
     }
@@ -178,5 +181,6 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     private suspend fun insertAsteroidsToDatabase() {
         //dataSource.insert(asteroid1)
         _list.forEach{dataSource.insert(it)}
+        //_list.clear()
     }
 }

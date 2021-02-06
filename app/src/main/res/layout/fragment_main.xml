@@ -47,7 +47,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="@string/image_of_the_day"/>
+                android:text="@{viewModel.obj3.title}"/>
 
         </FrameLayout>
 
