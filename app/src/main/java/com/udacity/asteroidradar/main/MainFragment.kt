@@ -2,8 +2,6 @@ package com.udacity.asteroidradar.main
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
-import androidx.annotation.RestrictTo
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -11,21 +9,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
-import com.udacity.asteroidradar.api.AsteroidApi
-import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
-import com.udacity.asteroidradar.database.RawJson
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-import kotlinx.android.synthetic.main.activity_main.view.*
-import okhttp3.ResponseBody
-import org.json.JSONObject
-import retrofit2.*
 import timber.log.Timber
-import java.lang.reflect.Array.get
 
 class MainFragment : Fragment() {
 
@@ -61,9 +49,9 @@ class MainFragment : Fragment() {
         /*val adapter = SleepNightAdapter(AsteroidListener { asteroidId ->
             Toast.makeText(context, "${asteroidId}", Toast.LENGTH_LONG).show()
         })*/
-        val adapter = AsteroidAdapter(AsteroidListener { asteroidId ->
+        val adapter = AsteroidAdapter(AsteroidListener { asteroid ->
             //Toast.makeText(context, "${asteroidId}", Toast.LENGTH_LONG).show()
-            AsteroidViewModel.onAsteroidClicked(asteroidId)
+            AsteroidViewModel.onAsteroidClicked(asteroid)
         })
         binding.asteroidRecycler.adapter = adapter
 
@@ -82,7 +70,7 @@ class MainFragment : Fragment() {
 
         AsteroidViewModel.navigateToAsteroidDetails.observe(viewLifecycleOwner, Observer { asteroid ->
             asteroid?.let { this.findNavController().navigate(
-                    MainFragmentDirections.actionShowDetail(asteroid1))
+                    MainFragmentDirections.actionShowDetail(asteroid))
                 AsteroidViewModel.onAsteroidNavigated()
             }
         })

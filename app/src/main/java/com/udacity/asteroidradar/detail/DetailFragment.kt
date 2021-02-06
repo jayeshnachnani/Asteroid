@@ -20,6 +20,9 @@ class DetailFragment : Fragment() {
 
         binding.asteroid = asteroid
 
+        //binding.asteroid.isPotentiallyHazardous == true
+
+
         binding.helpButton.setOnClickListener {
             displayAstronomicalUnitExplanationDialog()
         }

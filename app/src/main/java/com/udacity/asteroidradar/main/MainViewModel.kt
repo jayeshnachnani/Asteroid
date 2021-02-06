@@ -2,8 +2,6 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.AsteroidApi
@@ -11,12 +9,10 @@ import com.udacity.asteroidradar.api.ImageApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.AsteroidDatabaseDao
-import com.udacity.asteroidradar.database.RawJson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -57,7 +53,7 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     val navigateToSleepQuality: LiveData<Asteroid>
         get() = _navigateToAsteroidDetails*/
 
-    private val _navigateToAsteroidDetails = MutableLiveData<Long>()
+    private val _navigateToAsteroidDetails = MutableLiveData<Asteroid>()
     val navigateToAsteroidDetails
         get() = _navigateToAsteroidDetails
 
@@ -91,8 +87,8 @@ class MainViewModel(val database: AsteroidDatabaseDao,
         }
     }*/
 
-    fun onAsteroidClicked(id: Long) {
-        _navigateToAsteroidDetails.value = id
+    fun onAsteroidClicked(asteroid: Asteroid) {
+        _navigateToAsteroidDetails.value = asteroid
     }
 
     fun onAsteroidNavigated() {
