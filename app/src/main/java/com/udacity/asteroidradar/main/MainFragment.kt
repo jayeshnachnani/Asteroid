@@ -25,7 +25,6 @@ class MainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        //val binding = FragmentMainBinding.inflate(inflater)
         val binding: FragmentMainBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_main, container, false)
         val application = requireNotNull(this.activity).application
@@ -33,34 +32,19 @@ class MainFragment : Fragment() {
         val asteroid1 = Asteroid(1L,"second","sec",1.6,1.7,
             1.8,1.9,true)
 
-        /*dataSource.insert(asteroid1)
-        Timber.i("Data inserted")
-        val asterList = dataSource.getAllAsteroids()
-        asterList.value?.forEach {"Timbuk2:" + Timber.i(it.codename) }*/
         val viewModelFactory = MainViewModelFactory(dataSource, application)
         val AsteroidViewModel =
             ViewModelProvider(
                 this, viewModelFactory).get(MainViewModel::class.java)
         binding.viewModel = AsteroidViewModel
         binding.lifecycleOwner = this
-        //binding.viewModel = viewModel
         setHasOptionsMenu(true)
 
-        /*val adapter = SleepNightAdapter(AsteroidListener { asteroidId ->
-            Toast.makeText(context, "${asteroidId}", Toast.LENGTH_LONG).show()
-        })*/
+
         val adapter = AsteroidAdapter(AsteroidListener { asteroid ->
-            //Toast.makeText(context, "${asteroidId}", Toast.LENGTH_LONG).show()
             AsteroidViewModel.onAsteroidClicked(asteroid)
         })
         binding.asteroidRecycler.adapter = adapter
-
-        /*viewModel.nights.observe(viewLifecycleOwner, Observer {
-
-            it?.let {
-                adapter.data = it
-            }
-        })*/
 
         AsteroidViewModel.asteroidTempList.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -74,7 +58,6 @@ class MainFragment : Fragment() {
                 AsteroidViewModel.onAsteroidNavigated()
             }
         })
-        //asteroid1 is hardcoded above
 
         Timber.plant(Timber.DebugTree())
         return binding.root

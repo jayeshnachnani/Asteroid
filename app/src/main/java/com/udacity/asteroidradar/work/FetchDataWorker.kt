@@ -46,10 +46,4 @@ class FetchDataWorker(appContext: Context, params: WorkerParameters) :
             Result.retry()
         }
     }
-    /*private suspend fun test() {
-        withContext(Dispatchers.IO) {
-            //dataSource.insert(asteroid)
-
-        }
-    }*/
 }

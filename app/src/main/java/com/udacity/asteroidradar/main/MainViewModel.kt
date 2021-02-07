@@ -38,20 +38,13 @@ class MainViewModel(val database: AsteroidDatabaseDao,
 
     //private val asteroids = database.getAllAsteroids()
     //val asteroids = database.getAllAsteroids()
-    val asteroid1 = Asteroid(1L,"temp1","sec",1.6,1.7,
+    val asteroid1 = Asteroid(1L,"dummy","dummy",1.6,1.7,
         1.8,1.9,false)
-    val asteroid2 = Asteroid(1L,"temp2","sec",1.6,1.7,
-        1.8,1.9,false)
-    val asteroid3 = Asteroid(1L,"rumpelstiltskinrumpelstiltskin","sec",1.6,1.7,
-        1.8,1.9,true)
     private val _list = mutableListOf<Asteroid>()
     private val _asteroidTempList = MutableLiveData<List<Asteroid>>()
     val asteroidTempList: LiveData<List<Asteroid>>
         get() = _asteroidTempList
     var obj3 = PictureOfDay("","","")
-    /*private val _navigateToAsteroidDetails = MutableLiveData<Asteroid>()
-    val navigateToSleepQuality: LiveData<Asteroid>
-        get() = _navigateToAsteroidDetails*/
 
     private val _navigateToAsteroidDetails = MutableLiveData<Asteroid>()
     val navigateToAsteroidDetails
@@ -65,27 +58,15 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     val dataSource = AsteroidDatabase.getInstance(application).asteroidDatabaseDao
 
     init {
-
         getAsteroidProperties()
         getImage()
         addtoList()
-        //_imgURL = "apod.nasa.gov/apod/image/2102/a14pan9335-43emj_900.jpg"
         Timber.i("Image1:" + imgURL.toString())
         Timber.i("Image2:" + _imgURL.toString())
 
         _list.add(asteroid1)
-        _list.add(asteroid2)
-        _list.add(asteroid3)
 
-        //_asteroidTempList.value = _list
-        //getAsteroids()
     }
-
-    /*private fun getAsteroids() {
-        viewModelScope.launch {
-            val asteroids = database.getAllAsteroids()
-        }
-    }*/
 
     fun onAsteroidClicked(asteroid: Asteroid) {
         _navigateToAsteroidDetails.value = asteroid
@@ -123,16 +104,10 @@ class MainViewModel(val database: AsteroidDatabaseDao,
                 }
                 val asteroid1 = Asteroid(1L,"second","sec",1.6,1.7,
                     1.8,1.9,true)
-                //asteroidList.add(asteroid1)
-                /*dataSource.insert(asteroid1)
-                Timber.i("Data inserted")
-                val asterList = dataSource.getAllAsteroids()
-                asterList.value?.forEach {"Timbuk2:" + Timber.i(it.codename) }*/
+
             }
         })
 
-
-        //_response.value = "Set the Mars API Response here!"
     }
 
     private fun getImage() {
@@ -149,39 +124,21 @@ class MainViewModel(val database: AsteroidDatabaseDao,
 
                 Timber.i("obj3:" + obj3?.url.toString())
                 Timber.i("Image2:" + imgURL.toString())
-
-
-                //var asteroidList = ArrayList<Asteroid>()
-                //asteroidList = parseAsteroidsJsonResult(obj2)
-                //asteroidList.forEach {  "Timbuk:" + Timber.i("TimbukTimbuk" + it.codename) }
                 val asteroid1 = Asteroid(1L,"second","sec",1.6,1.7,
                     1.8,1.9,true)
-                //asteroidList.add(asteroid1)
-                /*dataSource.insert(asteroid1)
-                Timber.i("Data inserted")
-                val asterList = dataSource.getAllAsteroids()
-                asterList.value?.forEach {"Timbuk2:" + Timber.i(it.codename) }*/
             }
         })
 
-
-        //_response.value = "Set the Mars API Response here!"
     }
 
     private fun addtoList(){
         val asteroidTemp1List = dataSource.getAllAsteroids()
         _list.clear()
         asteroidTemp1List.value?.forEach { _list.add (it)}
-
         _asteroidTempList.value = _list
-        //asteroidTempList.value = _list
-
-        //TO DO: _list.addAll(asteroidTemp1List)
-
     }
 
     private suspend fun insertAsteroidsToDatabase() {
-        //dataSource.insert(asteroid1)
         _list.forEach{dataSource.insert(it)}
         //_list.clear()
     }
