@@ -105,6 +105,7 @@ class MainViewModel(val database: AsteroidDatabaseDao,
 
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 _response.value = "Success: ${response.body()} Asteroid properties retrieved"
+                Timber.i("Response2:" + response.body())
                 var obj1 = JSONObject(response.body().toString())
                 Timber.i("obj1:" + obj1.toString())
                 var asteroidList = ArrayList<Asteroid>()
@@ -173,6 +174,7 @@ class MainViewModel(val database: AsteroidDatabaseDao,
         asteroidTemp1List.value?.forEach { _list.add (it)}
 
         _asteroidTempList.value = _list
+        //asteroidTempList.value = _list
 
         //TO DO: _list.addAll(asteroidTemp1List)
 

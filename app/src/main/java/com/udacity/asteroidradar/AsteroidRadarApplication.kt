@@ -1,29 +1,28 @@
 package com.udacity.asteroidradar
 
+import android.app.Application
 import android.os.Build
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
-//import com.udacity.asteroidradar.MainActivity.Companion.WORK_NAME
 import com.udacity.asteroidradar.work.FetchDataWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class MainActivity : AppCompatActivity() {
+class AsteroidRadarApplication : Application() {
 
-    /*val applicationScope = CoroutineScope(Dispatchers.Default)*/
+    val applicationScope = CoroutineScope(Dispatchers.Default)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //delayedInit()
-        setContentView(R.layout.activity_main)
+    override fun onCreate() {
+        super.onCreate()
+        Timber.plant(Timber.DebugTree())
+        delayedInit()
     }
-
-    /*private fun delayedInit() = applicationScope.launch {
+    private fun delayedInit() = applicationScope.launch {
         setupRecurringWork()
     }
+
     private fun setupRecurringWork() {
 
         val constraints = Constraints.Builder()
@@ -45,5 +44,5 @@ class MainActivity : AppCompatActivity() {
             ExistingPeriodicWorkPolicy.KEEP,
             repeatingRequest)
 
-    }*/
+    }
 }

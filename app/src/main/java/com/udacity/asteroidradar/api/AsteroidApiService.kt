@@ -14,9 +14,14 @@ import okhttp3.ResponseBody
 import org.json.JSONObject
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import retrofit2.Response
+import retrofit2.http.Path
 import retrofit2.http.Query
+import timber.log.Timber
 
 private const val BASE_URL = "https://api.nasa.gov/neo/rest/v1/"
+val nextsevendays = getNextSevenDaysFormattedDates()
+
+val today = nextsevendays.first()
 
 private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -33,11 +38,22 @@ private const val endDate= "2020-01-02"
 
 // TODO (03) Implement the AsteroidApiService interface with @GET getProperties returning a String
 
-interface AsteroidApiService {
+/*interface AsteroidApiService {
     //retrofit will generate the functions required, we just need to tell it what to do
-    @GET("feed?start_date=2021-02-06&api_key=")
+    //@GET("feed?start_date={today}&end_date={today}&api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
+    @GET("feed?start_date=2021=07-02&api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
     //fun getProperties(@Query("start_date") String startDate):
     fun getProperties():
+    //fun getProperties(@Path("today") date: String = today):
+            Call <String>
+}*/
+
+interface AsteroidApiService {
+    //retrofit will generate the functions required, we just need to tell it what to do
+    //@GET("feed?start_date={today}&api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
+    @GET("feed?api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
+    //fun getProperties(@Query("start_date") String startDate):
+    fun getProperties(@Query("start_date") date: String = today):
             Call <String>
 }
 
