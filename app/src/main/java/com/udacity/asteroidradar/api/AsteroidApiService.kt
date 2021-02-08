@@ -25,7 +25,7 @@ private val retrofit = Retrofit.Builder()
 // TODO (03) Implement the AsteroidApiService interface with @GET getProperties returning a String
 
 interface AsteroidApiService {
-    @GET("feed?api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
+    @GET("feed?api_key=")
     fun getProperties(@Query("start_date") date: String = today):
             Call <String>
 }
