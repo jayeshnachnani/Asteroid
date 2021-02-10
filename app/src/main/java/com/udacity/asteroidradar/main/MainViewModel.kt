@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.AsteroidApi
+import com.udacity.asteroidradar.api.AsteroidApiFilter
 import com.udacity.asteroidradar.api.ImageApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
@@ -24,10 +25,11 @@ class MainViewModel(val database: AsteroidDatabaseDao,
 ) : AndroidViewModel(application) {
 
 
-    private val _response = MutableLiveData<String>()
+    val _imgresponse = MutableLiveData<PictureOfDay>()
 
-    val response: LiveData<String>
-        get() = _response
+    var imgresponse: LiveData<PictureOfDay>
+        get() = _imgresponse
+        set(value) {}
 
     private var viewModelJob = Job()
 
@@ -58,7 +60,7 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     val dataSource = AsteroidDatabase.getInstance(application).asteroidDatabaseDao
 
     init {
-        getAsteroidProperties()
+        getAsteroidProperties(AsteroidApiFilter.VIEW_SAVED)
         getImage()
         addtoList()
         Timber.i("Image1:" + imgURL.toString())
@@ -77,15 +79,15 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     }
 
 
-    private fun getAsteroidProperties() {
-        AsteroidApi.retrofitService.getProperties().enqueue( object: Callback<String> {
+    private fun getAsteroidProperties(filter: AsteroidApiFilter) {
+        AsteroidApi.retrofitService.getProperties(type=filter.value).enqueue( object: Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {
-                _response.value = "Failure: " + t.message
-                Timber.i("Failure:" + _response.value)
+                //_response.value = "Failure: " + t.message
+                Timber.i("Failure:" + t.message)
             }
 
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                _response.value = "Success: ${response.body()} Asteroid properties retrieved"
+                //_response.value = "Success: ${response.body()} Asteroid properties retrieved"
                 Timber.i("Response2:" + response.body())
                 var obj1 = JSONObject(response.body().toString())
                 Timber.i("obj1:" + obj1.toString())
@@ -113,16 +115,21 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     private fun getImage() {
         ImageApi.retrofitService.getProperties().enqueue( object: Callback<PictureOfDay> {
             override fun onFailure(call: Call<PictureOfDay>, t: Throwable) {
-                _response.value = "Failure: " + t.message
-                Timber.i("Failure:" + _response.value)
+                //_imgresponse.value = "Failure: " + t.message
+                Timber.i("Failure:" + t.message)
             }
 
             override fun onResponse(call: Call<PictureOfDay>, response: Response<PictureOfDay>) {
-                _response.value = "Success: ${response.body()} Asteroid properties retrieved"
+                //_imgresponse.value = "Success: ${response.body()} Asteroid properties retrieved"
                 var obj2 =response.body()
-                obj3 = response.body()!!
+                _imgresponse.value = response.body()
+                _imgresponse.observeForever{
+                    obj3 = response.body()!!
+                    Timber.i("obj3:" + obj3?.url.toString())
+                }
+                //obj3 = response.body()!!
 
-                Timber.i("obj3:" + obj3?.url.toString())
+                //Timber.i("obj3:" + obj3?.url.toString())
                 Timber.i("Image2:" + imgURL.toString())
                 val asteroid1 = Asteroid(1L,"second","sec",1.6,1.7,
                     1.8,1.9,true)
@@ -131,15 +138,49 @@ class MainViewModel(val database: AsteroidDatabaseDao,
 
     }
 
-    private fun addtoList(){
+    /*private fun addtoList(){
         val asteroidTemp1List = dataSource.getAllAsteroids()
         _list.clear()
         asteroidTemp1List.value?.forEach { _list.add (it)}
         _asteroidTempList.value = _list
+    }*/
+
+    private fun addtoList(){
+        val asteroidTemp1List = dataSource.getAllAsteroids()
+        _list.clear()
+        asteroidTemp1List.observeForever {
+            it.forEach { _list.add(it) }
+            _asteroidTempList.value = _list
+        }
     }
 
     private suspend fun insertAsteroidsToDatabase() {
         _list.forEach{dataSource.insert(it)}
         //_list.clear()
     }
+
+    fun updateFilter(filter: AsteroidApiFilter) {
+        //getAsteroidProperties(filter)
+        val asteroidTemp1List:LiveData<List<Asteroid>>
+        if (filter == AsteroidApiFilter.VIEW_SAVED)
+        {
+            getAsteroidProperties(filter)
+            return
+        }
+        else if (filter == AsteroidApiFilter.VIEW_TODAY)
+        {
+            asteroidTemp1List = dataSource.getTodaysAsteroids()
+        }
+        else{
+            asteroidTemp1List = dataSource.getWeeklyAsteroids()
+        }
+
+        //val asteroidTemp1List = dataSource.getTodaysAsteroids()
+        _list.clear()
+        asteroidTemp1List.observeForever {
+            it.forEach { _list.add(it) }
+            _asteroidTempList.value = _list
+        }
+    }
+
 }

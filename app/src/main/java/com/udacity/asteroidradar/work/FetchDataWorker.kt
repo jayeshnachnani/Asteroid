@@ -6,6 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.api.AsteroidApi
+import com.udacity.asteroidradar.api.AsteroidApiFilter
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import kotlinx.coroutines.*
@@ -31,16 +32,19 @@ class FetchDataWorker(appContext: Context, params: WorkerParameters) :
 
     override suspend fun doWork(): Result {
         return try {
-            val response: Response<String> = AsteroidApi.retrofitService.getProperties().execute()
+            var filter: AsteroidApiFilter = AsteroidApiFilter.VIEW_SAVED
+            val response: Response<String> = AsteroidApi.retrofitService.getProperties(type=filter.value).execute()
             var obj1 = JSONObject(response.body().toString())
             asteroidList = parseAsteroidsJsonResult(obj1)
             coroutineScope.launch {
                 withContext(Dispatchers.IO)
                 {
                     asteroidList.forEach { dataSource.insert(it) }
+                    Timber.i("Data inserted2!!!")
 
                 }
             }
+            Timber.i("Data inserted3!!!")
             Result.success()
         } catch (e: HttpException) {
             Result.retry()

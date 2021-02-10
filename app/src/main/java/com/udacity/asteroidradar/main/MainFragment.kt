@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.api.AsteroidApiFilter
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import timber.log.Timber
@@ -21,17 +22,21 @@ class MainFragment : Fragment() {
 
     val response: LiveData<String>
         get() = _response
+    //val application = requireNotNull(this.activity).application
+    //val dataSource = AsteroidDatabase.getInstance(application).asteroidDatabaseDao
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         val binding: FragmentMainBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_main, container, false)
-        val application = requireNotNull(this.activity).application
-        val dataSource = AsteroidDatabase.getInstance(application).asteroidDatabaseDao
+        //val application = requireNotNull(this.activity).application
+        //val dataSource = AsteroidDatabase.getInstance(application).asteroidDatabaseDao
         val asteroid1 = Asteroid(1L,"second","sec",1.6,1.7,
             1.8,1.9,true)
-
+        val application = requireNotNull(this.activity).application
+        val dataSource = AsteroidDatabase.getInstance(application).asteroidDatabaseDao
         val viewModelFactory = MainViewModelFactory(dataSource, application)
         val AsteroidViewModel =
             ViewModelProvider(
@@ -68,7 +73,24 @@ class MainFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return true
+    }*/
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val application = requireNotNull(this.activity).application
+        val dataSource = AsteroidDatabase.getInstance(application).asteroidDatabaseDao
+        val viewModelFactory = MainViewModelFactory(dataSource, application)
+        val AsteroidViewModel =
+            ViewModelProvider(
+                this, viewModelFactory).get(MainViewModel::class.java)
+        AsteroidViewModel.updateFilter(
+            when (item.itemId) {
+                R.id.show_week_menu -> AsteroidApiFilter.VIEW_WEEK
+                R.id.show_today_menu -> AsteroidApiFilter.VIEW_TODAY
+                else -> AsteroidApiFilter.VIEW_SAVED
+            }
+        )
         return true
     }
 }

@@ -12,6 +12,9 @@ private const val BASE_URL = "https://api.nasa.gov/neo/rest/v1/"
 val nextsevendays = getNextSevenDaysFormattedDates()
 
 val today = nextsevendays.first()
+val lastdayofweek = nextsevendays.last()
+//end date
+enum class AsteroidApiFilter(val value: String) { VIEW_WEEK(lastdayofweek), VIEW_TODAY(today), VIEW_SAVED(lastdayofweek) }
 
 private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -25,8 +28,8 @@ private val retrofit = Retrofit.Builder()
 // TODO (03) Implement the AsteroidApiService interface with @GET getProperties returning a String
 
 interface AsteroidApiService {
-    @GET("feed?api_key=")
-    fun getProperties(@Query("start_date") date: String = today):
+    @GET("feed?api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
+    fun getProperties(@Query("start_date") date: String = today, @Query("end_date") type: String = lastdayofweek):
             Call <String>
 }
 

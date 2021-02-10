@@ -2,6 +2,9 @@ package com.udacity.asteroidradar
 
 import android.app.Application
 import android.os.Build
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.work.*
 import com.udacity.asteroidradar.work.FetchDataWorker
 import kotlinx.coroutines.CoroutineScope
@@ -10,7 +13,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class AsteroidRadarApplication : Application() {
+class AsteroidRadarApplication : Application(){
 
     val applicationScope = CoroutineScope(Dispatchers.Default)
 
@@ -19,30 +22,47 @@ class AsteroidRadarApplication : Application() {
         //Timber.plant(Timber.DebugTree())
         delayedInit()
     }
+
     private fun delayedInit() = applicationScope.launch {
         setupRecurringWork()
+        Timber.i("Data inserted0!!!")
     }
 
     private fun setupRecurringWork() {
+        Timber.i("Data inserted1!!!")
 
         val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.UNMETERED)
+            //.setRequiredNetworkType(NetworkType.UNMETERED)
             .setRequiresBatteryNotLow(true)
-            .setRequiresCharging(true)
+            //.setRequiresCharging(true)
             .apply {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     setRequiresDeviceIdle(true)
                 }
             }.build()
 
-        val repeatingRequest = PeriodicWorkRequestBuilder<FetchDataWorker>(1, TimeUnit.DAYS)
+        val repeatingRequest = PeriodicWorkRequestBuilder<FetchDataWorker>(15, TimeUnit.MINUTES)
             .setConstraints(constraints)
+            .addTag(FetchDataWorker.WORK_NAME)
             .build()
 
-        WorkManager.getInstance().enqueueUniquePeriodicWork(
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             FetchDataWorker.WORK_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
-            repeatingRequest)
+            repeatingRequest
+        )
 
+        WorkManager.getInstance(this).getWorkInfosForUniqueWorkLiveData(FetchDataWorker.WORK_NAME)
+            .observe(this,
+                Observer { workInfo ->
+                    if (workInfo?.get(0)?.state == WorkInfo.State.SUCCEEDED) {
+                        Timber.i("JOB COMPLETED SUCCESSFULLY")
+                    }
+                })
     }
 }
+
+private fun <T> LiveData<T>.observe(asteroidRadarApplication: AsteroidRadarApplication, observer: Observer<T>) {
+
+}
+
