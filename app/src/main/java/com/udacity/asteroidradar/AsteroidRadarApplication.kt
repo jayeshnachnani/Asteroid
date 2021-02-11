@@ -32,9 +32,9 @@ class AsteroidRadarApplication : Application(){
         Timber.i("Data inserted1!!!")
 
         val constraints = Constraints.Builder()
-            //.setRequiredNetworkType(NetworkType.UNMETERED)
+            .setRequiredNetworkType(NetworkType.UNMETERED)
             .setRequiresBatteryNotLow(true)
-            //.setRequiresCharging(true)
+            .setRequiresCharging(true)
             .apply {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     setRequiresDeviceIdle(true)

@@ -66,7 +66,7 @@ class MainViewModel(val database: AsteroidDatabaseDao,
         Timber.i("Image1:" + imgURL.toString())
         Timber.i("Image2:" + _imgURL.toString())
 
-        _list.add(asteroid1)
+        //_list.add(asteroid1)
 
     }
 
@@ -155,7 +155,8 @@ class MainViewModel(val database: AsteroidDatabaseDao,
     }
 
     private suspend fun insertAsteroidsToDatabase() {
-        _list.forEach{dataSource.insert(it)}
+        //_list.forEach{dataSource.insert(it)}
+        dataSource.insertAll(_list)
         //_list.clear()
     }
 
@@ -164,8 +165,8 @@ class MainViewModel(val database: AsteroidDatabaseDao,
         val asteroidTemp1List:LiveData<List<Asteroid>>
         if (filter == AsteroidApiFilter.VIEW_SAVED)
         {
-            getAsteroidProperties(filter)
-            return
+            asteroidTemp1List = dataSource.getAllAsteroids()
+
         }
         else if (filter == AsteroidApiFilter.VIEW_TODAY)
         {

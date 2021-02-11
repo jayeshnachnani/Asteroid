@@ -30,7 +30,7 @@
                 android:contentDescription="TODO"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{viewModel.obj3.url}"
-                />
+                app:srcCompat="@drawable/placeholder_picture_of_day" />
                 <!--android:src="@{viewModel.imgURL}"-->
 
 
