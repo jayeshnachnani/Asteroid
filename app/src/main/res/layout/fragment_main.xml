@@ -25,10 +25,10 @@
             <ImageView
                 android:id="@+id/activity_main_image_of_the_day"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:contentDescription="TODO"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 app:imageUrl="@{viewModel.obj3.url}"
                 app:srcCompat="@drawable/placeholder_picture_of_day" />
                 <!--android:src="@{viewModel.imgURL}"-->

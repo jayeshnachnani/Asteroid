@@ -27,7 +27,7 @@ private val retrofit = Retrofit.Builder()
 
 interface ImageApiService {
     //retrofit will generate the functions required, we just need to tell it what to do
-    @GET("apod?api_key=50eCWN0C6HrKmxnencJcxAJMfeUXbCGjSKuuE0iZ")
+    @GET("apod?api_key=")
     //fun getProperties(@Query("start_date") String startDate):
     fun getProperties():
             Call <PictureOfDay>
